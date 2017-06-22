@@ -1,0 +1,4 @@
+try for stash
+stash list
+stash apply
+stash pop
