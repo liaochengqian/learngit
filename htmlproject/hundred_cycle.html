@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>hundred_cycle</title>
+<!-- css -->
+<style type="text/css">
+	.btn{
+		font-size:24px;
+	}
+	.btn2{
+		border:none;
+		background-color:transparent;
+	}
+	img {
+		width:240px;
+		height:160px;
+	}
+</style>
+
+<!-- script import people list -->
+<script type="text/javascript" src="list.js"></script>
+<!-- script import gift list -->
+<script type="text/javascript" src="gift.js"></script>
+
+<!-- script functions -->
+<script type="text/javascript">
+	//-------------beginning . show current time 
+	//1.printTime function --beginning
+	function printTime(){
+		//setTimeout("loadTime()" , 1000);
+		setInterval( "loadTime()" , 1000 );
+	}
+	//2.loadTime function 
+	function loadTime(){
+		var date = new Date();
+		var yy = date.getFullYear();
+		var mm = getDouble( date.getMonth() + 1 );
+		var dd = getDouble( date.getDate() );
+		var day = getDay( date.getDay() );
+		var hh = getDouble( date.getHours() ); 
+		var mn = getDouble( date.getMinutes() ); 
+		var ss = getDouble( date.getSeconds() );
+		
+		var d = yy+"-"+mm+"-"+dd+" "+hh+":"+mn+":"+ss+" "+ day;
+		document.getElementById("time").value = d;
+		//setTimeout("loadTime()" , 1000);
+	}
+	//3.turn nums(0~6) to Day
+	function getDay( order ){
+		switch( order ){
+			case 0:
+				return "星期天";
+			case 1:
+				return "星期一";
+			case 2:
+				return "星期二";
+			case 3:
+				return "星期三";
+			case 4:
+				return "星期四";
+			case 5:
+				return "星期五";
+			case 6:
+				return "星期六";
+		}
+	}
+	//4.eleminate single nums less than 10
+	function getDouble( num ){
+		if( parseInt(num)<10 ){
+			num = "0" + num;
+		}
+		return num;
+	}
+	//-------Ending . show current time 
+	
+	//-------Beginning . 100_cycle
+	//1.start function
+	var task = null ;
+	var task2 = null ;
+	function start(){
+		if( task == null){
+			task = setInterval( "hundredCycle()",50);
+			if( all != 0){
+				task2 = setInterval( "giftCycle()",50);
+			}
+			//task = setTimeout( "hundredCycle()",50);
+		}
+	}
+	//2.stop function
+	function stop(){
+		clearInterval( task );
+		clearInterval( task2 );
+		swap( count , all , orders );
+		if( task != null ){
+			all--;
+			printList();
+			hits--;
+		}
+		if( hits < 1 ){
+			var conf = confirm("抽奖已全部完成！");
+		}
+		task = null;
+		//clearTimeout(task);
+	}
+	//3.hundredCycle function
+	var count = 0;
+	var hits = 5 ;//define how many people will be choosen
+	var all = LIST.length; //change the length and prove to avoid repeat draws
+	var orders = new Array( all );
+	for( var i = 0 ; i < all ; i++){
+			orders[i] = i;
+	}
+	function hundredCycle(){
+		//tips "all done"
+		if( hits < 1 ){
+			var conf = confirm("抽奖已全部完成！");
+			clearInterval( task );
+			clearInterval( task2 );
+			task = null;
+		}else{
+			var now = orders[count];
+			document.getElementById("luckyPool").value = LIST[ now ];
+			count++;
+			if( count >= all ){
+				count = 0;
+			}
+		}
+		//setTimeout("hundredCycle()" , 50);
+	}
+	//4.print luckyList
+	var list =  "姓名\t籍贯\t\t专业\t\t\t奖品\n";
+	function printList(){
+		var show = document.getElementById( "showbox" );
+		list += (document.getElementById( "luckyPool" ).value + "\t\t" + document.getElementById( "giftPool" ).value) +"\n";
+		show.innerHTML = list;
+	}
+	//5.swap with the lastone function
+	function swap( num1 , num2 , order ){
+		if( num1 == 0 ){
+			num1=num2;
+		}
+		var tmp = order[num2-1];
+		order[num2-1] = order[num1-1];
+		order[num1-1] = tmp;
+	}
+	//6.gift cycle
+	var g = 0;
+	function giftCycle(){
+		document.getElementById("giftPool").value = "  X  " + GIFT[ g ];
+		document.getElementById("div").innerHTML = "<img src='pic/" +  GI[g] +"' />";
+		g++;
+		if( g >= GIFT.length ){
+			g = 0;
+		}
+		//setTimeout("hundredCycle()" , 50);
+	}
+	//-------Ending . 100_cycle
+	
+	//-------Beginning . Counting
+	//1.start counting
+	function Counting(){
+		setInterval("timeCount()",2);
+	}
+	//2.how to count
+	var dest = Date.parse("Oct 1,2017");
+	//var dest = Date.parse("Dec 5,2007");
+	function timeCount(){
+		var date = new Date();
+		var now = date.getTime();
+		var offset = Math.abs(dest - now);
+		
+		var msec = offset % 1000;
+		if( msec <100 ){
+			if( msec < 10 ){
+				msec = "00" + msec;
+			}else{
+				msec = "0" + msec;
+			} 
+		}
+		var secs = parseInt(offset / 1000);
+		var sec = secs % 60;
+		var mms = parseInt(secs / 60);
+		var mm = mms % 60;
+		var hhs = parseInt(mms / 60);
+		var hh = hhs % 24;
+		var dds = parseInt(hhs / 24);
+		var dd = dds % 365;
+		var yy = parseInt(dds / 365);
+	
+		var result = yy + " 年 " + dd + "  天 " + hh + " 时 " + mm + " 分 " + sec + " 秒 " + msec;
+		document.getElementById("timeCount").innerHTML = result;
+		//alert( result );
+	}
+	//-------Ending . Counting
+</script>
+</head>
+
+<body>
+	<p align="center" style="background:url(pic/wly3.jpg); width:500px; height:140px;">
+	<input type="button" class="btn btn2" value="五粮液独家为您报时：" onclick="printTime()" />
+	<br/>
+	<input type="text" class="btn2" id="time" align="center" style="width:320px; height:50px; font-size:24px"/></p>
+	<input type="button" class="btn" onclick="Counting()" value="距2017-10-01 00:00:00还有："/>
+	<div id="timeCount" align="center" style="width:400px; color:#FF0000; height:50px; font-size:20px; border:#000000 solid thin"></div>
+	<br/>
+	<input type="button" class="btn" value="开始抽奖" onclick="start()" />&nbsp;&nbsp;
+	<input type="button" class="btn" value="停" onclick="stop()" /><br/>
+	<input type="text" id="luckyPool" align="center" style="width:330px; height:50px; font-size:20px"></input><b>&nbsp;&nbsp;奖品:</b>
+	<input type="text" id="giftPool" align="center" style="width:280px; height:50px; font-size:20px"><br/><br/>
+	<div id="div" align="center" style="width:640px; height:160px"></div>
+	<br/>
+	<div style="width:400px; color:#FF0000"><b>&nbsp;获奖名单：</b></div>
+	<textarea id="showbox" style="width:660px; height:500px; font-size:18px; border:#000000 solid thin"></textarea>
+</body>
+</html>

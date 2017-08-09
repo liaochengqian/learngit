@@ -1,0 +1,385 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>无标题文档</title>
+
+<!-- css -->
+<style type="text/css">
+
+</style>
+
+<!-- script -->
+<script type="text/javascript">
+
+//operation of  boxs without indicated 
+function boxOperate( num ){
+	//distinguish leftbox or rightbox
+	var box = "leftbox";
+	var input = "leftinput";
+	var names = "leftoption";
+	if( num == 2){
+		box = "rightbox";
+		input = "rightinput";
+		names = "rightoption";
+	}
+	//operate
+	var Box_Node = document.getElementById( box );
+	var Box_Input = document.getElementById( input );
+	Box_Input.value = Box_Node.value;
+	Box_Input.select();
+	//Box_Input.focus();
+	//alert("leftbox");
+}
+//operation of  createNews without indicated 
+var id = 6;
+function createNew( num ){
+
+	//distinguish leftbox or rightbox
+	var box = "leftbox";
+	var input = "leftinput";
+	var names = "leftoption";
+	if( num == 2){
+		box = "rightbox";
+		input = "rightinput";
+		names = "rightoption";
+	}
+	//operate
+	var Box_Node = document.getElementById( box );
+	var Box_Input = document.getElementById( input );
+	var selNodes = document.getElementsByClassName( names );
+	//alert( selNodes.length )
+	
+	var newOptionNode = document.createElement( "option" );
+	//alert( LB_Node );
+	//alert( typeof Box_Input.value );
+	if( !Box_Input.value || Box_Input.value.toLowerCase() == "null" || Box_Input.value.toLowerCase() == "undefined" ){
+		alert( "Data not Supported!" );
+		return;
+	}
+	//check if value is already existed
+	for( var i = 0; i< selNodes.length ; i++ ){
+		if( Box_Input.value == selNodes[i].value ){
+			alert( "This Value is already existed !" );
+			return;
+		}
+	}
+	
+	newOptionNode.appendChild( document.createTextNode( Box_Input.value ) );
+	newOptionNode.setAttribute( "id",id++ );
+	newOptionNode.setAttribute( "class", names );
+	newOptionNode.setAttribute( "value", Box_Input.value );
+	Box_Node.appendChild( newOptionNode );
+}
+//operation of  delete without indicated 
+function del( num ){
+	//distinguish leftbox or rightbox
+	var box = "leftbox";
+	var input = "leftinput";
+	var names = "leftoption";
+	if( num == 2){
+		box = "rightbox";
+		input = "rightinput";
+		names = "rightoption";
+	}
+	//operate
+	var Box_Node = document.getElementById( box );
+	var selNodes = document.getElementsByClassName( names );
+	//alert( selNodes[0].selected );
+	// iterator all to check whether selected or not?
+	for( var i = 0; i< selNodes.length ; i++){
+		if( selNodes[i].selected ){
+			Box_Node.removeChild( selNodes[i] );
+			i--;
+		}
+	}
+	document.getElementById( input ).value = "";
+}
+//operation of  moveUp without indicated
+function moveUp( num ){
+	var count = 0;
+	var selNode = null;
+	//distinguish leftbox or rightbox
+	var box = "leftbox";
+	var input = "leftinput";
+	var names = "leftoption";
+	if( num == 2){
+		box = "rightbox";
+		input = "rightinput";
+		names = "rightoption";
+	}
+	
+	var Box_Node = document.getElementById( box );
+	//not supported for multiple moves
+	var selNodes = document.getElementsByClassName( names );
+	for( var i = 0; i< selNodes.length ; i++){
+		if( selNodes[i].selected ){
+			selNode =  selNodes[i];
+			//alert( selNode );
+			count++;
+		}
+	}
+	//mutiple doesn't supported
+	if( count > 1 ){
+		alert( "Supported once a time!" );
+		return;
+	}
+	//one selected 
+	if( count == 1 ){
+		var preNode = selNode.previousSibling;
+		//is first node or not?
+		if( preNode != null ){
+			//alert( preNode );
+			Box_Node.insertBefore( selNode , preNode );
+		}else{
+			alert("Already First!");
+			return;
+		}
+	}	
+}
+//operation of  moveDown without indicated
+function moveDown( num ){
+	var count = 0;
+	var selNode = null;
+	//distinguish leftbox or rightbox
+	var box = "leftbox";
+	var input = "leftinput";
+	var names = "leftoption";
+	if( num == 2){
+		box = "rightbox";
+		input = "rightinput";
+		names = "rightoption";
+	}
+	
+	var Box_Node = document.getElementById( box );
+	//not supported for multiple moves
+	var selNodes = document.getElementsByClassName( names );
+	for( var i = 0; i< selNodes.length ; i++){
+		if( selNodes[i].selected ){
+			selNode =  selNodes[i];
+			//alert( selNode );
+			count++;
+		}
+	}
+	//mutiple doesn't supported
+	if( count > 1 ){
+		alert( "Supported once a time!" );
+		return;
+	}
+	//one selected 
+	if( count == 1 ){
+		var nextNode = selNode.nextSibling;
+		//is first node or not?
+		if( nextNode != null ){
+			//alert( nextNode );
+			Box_Node.insertBefore( nextNode ,selNode );
+		}else{
+			alert("Already Last!");
+			return;
+		}
+	}	
+}
+//array to get default area
+//var areas = [ ['leftbox','leftinput','leftoption'],['rightbox','rightinput','rightoption'] ];
+//operation of  modify without indicated
+function modify( num ){
+	var count = 0;
+	//distinguish leftbox or rightbox
+	var box = "leftbox";
+	var input = "leftinput";
+	var names = "leftoption";
+	if( num == 2){
+		box = "rightbox";
+		input = "rightinput";
+		names = "rightoption";
+	}
+	//operate
+	var Box_Node = document.getElementById( box);
+	var Box_Input = document.getElementById( input );
+	
+	var selNodes = document.getElementsByClassName( names );
+	for( var i = 0; i< selNodes.length ; i++){
+		if( selNodes[i].selected ){
+			selNode =  selNodes[i];
+			//alert( selNode );
+			count++;
+		}
+	}
+	//mutiple doesn't supported
+	if( count > 1 ){
+		alert( "Supported once a time!" );
+		return;
+	}
+	//one selected 
+	if( count == 1 ){
+		if( !Box_Input.value || Box_Input.value.toLowerCase() == "null" || Box_Input.value.toLowerCase() == "undefined" ){
+			alert( "Data not Supported!" );
+			return;
+		}
+		selNode.innerHTML = Box_Input.value;
+	}		
+}
+//function moveRight
+function moveRight(){
+	//left box
+	var LBox_Node = document.getElementById( "leftbox" );
+	var LBox_selNodes = document.getElementsByClassName( "leftoption" );
+	//right box
+	var RBox_Node = document.getElementById( "rightbox" );
+	//var RBox_selNodes = document.getElementsByClassName( "rightoption" );
+	var tmp = null;
+	for( var i=LBox_selNodes.length-1; i >= 0 ; i-- ){
+		if( LBox_selNodes[i].selected ){
+			//alert( LBox_selNodes[i].id )
+			tmp = LBox_selNodes[i];
+			LBox_Node.removeChild( tmp );
+			tmp.setAttribute("class","rightoption");
+			RBox_Node.appendChild( tmp );
+			//alert( selNode );
+		}
+	}
+}
+//function moveLeft
+function moveLeft(){
+	//left box
+	var LBox_Node = document.getElementById( "leftbox" );
+	//var LBox_selNodes = document.getElementsByClassName( "leftoption" );
+	//right box
+	var RBox_Node = document.getElementById( "rightbox" );
+	var RBox_selNodes = document.getElementsByClassName( "rightoption" );
+	
+	var tmp = null;
+	for( var i=RBox_selNodes.length-1; i >= 0 ; i--){
+		if( RBox_selNodes[i].selected ){
+			tmp = RBox_selNodes[i];
+			RBox_Node.removeChild( RBox_selNodes[i] );
+			tmp.setAttribute("class" , "leftoption");
+			LBox_Node.appendChild( tmp );
+			//alert( selNode );
+		}
+	}
+}
+//function allMoveLeft()
+function allMoveLeft(){
+	//left box
+	var LBox_Node = document.getElementById( "leftbox" );
+	//var LBox_selNodes = document.getElementsByClassName( "leftoption" );
+	//right box
+	var RBox_Node = document.getElementById( "rightbox" );
+	var RBox_selNodes = document.getElementsByClassName( "rightoption" );
+	var RBox_Input = document.getElementById( "rightinput" );
+	
+	var tmp = null;
+	for( var i=RBox_selNodes.length-1; i >= 0 ; i--){
+		tmp = RBox_selNodes[i];
+		RBox_Node.removeChild( RBox_selNodes[i] );
+		tmp.setAttribute("class" , "leftoption");
+		LBox_Node.appendChild( tmp );
+		//alert( selNode );
+	}
+	RBox_Input.value = "";
+}
+function allmoveRight(){
+	//left box
+	var LBox_Node = document.getElementById( "leftbox" );
+	var LBox_selNodes = document.getElementsByClassName( "leftoption" );
+	var LBox_Input = document.getElementById( "leftinput" );
+	//alert(LBox_Input.value);
+	//right box
+	var RBox_Node = document.getElementById( "rightbox" );
+	//var RBox_selNodes = document.getElementsByClassName( "rightoption" );
+	var tmp = null;
+	for( var i=LBox_selNodes.length-1; i >= 0 ; i-- ){
+		//alert( LBox_selNodes[i].id )
+		tmp = LBox_selNodes[i];
+		LBox_Node.removeChild( tmp );
+		tmp.setAttribute("class","rightoption");
+		RBox_Node.appendChild( tmp );
+		//alert( selNode );
+	}
+	LBox_Input.value = "";
+}
+//indicate which box is it?
+// left box 
+function leftBox(){
+	boxOperate( 1 );
+}
+function createNew1(){
+	createNew(1);
+}
+function del1(){
+	del( 1 );
+}
+function moveUp1(){
+	moveUp( 1 );
+}
+function moveDown1(){
+	moveDown( 1 )
+}
+function modify1(){
+	modify( 1 )
+}
+// right box
+function rightBox(){
+	boxOperate( 2 );
+}
+function createNew2(){
+	createNew(2);
+}
+function del2(){
+	del( 2 );
+}
+function moveUp2(){
+	moveUp( 2 );
+}
+function moveDown2(){
+	moveDown( 2 )
+}
+function modify2(){
+	modify( 2 )
+}
+
+
+</script>
+
+</head>
+
+<body>
+	<table border="1px">
+		<tr>
+			<td><select id="leftbox" style="width:300px" size="10" multiple="multiple" onchange="leftBox()"><option id=1 class="leftoption" value="四川">四川</option><option id=2 class="leftoption" value="重庆">重庆</option><option id=3 class="leftoption" value="云南">云南</option><option id=4 class="leftoption" value="贵州">贵州</option></select>
+			</td>
+			<td align="center" style="width:80px;" colspan="2">
+				<input type="button" value="-->" onclick="moveRight()" /><br />
+				<input type="button" value="<--" onclick="moveLeft()" /><br /><br />
+				<input type="button" value="(all)-->" onclick="allmoveRight()" /><br />
+				<input type="button" value="<--(all)" onclick="allMoveLeft()" />
+			</td>
+			<td><select id="rightbox" style="width:300px" size="10" multiple="multiple" onchange="rightBox()"><option id=5 class="rightoption" value="湖北">湖北</option></select>
+			</td>
+		</tr>
+		<tr>
+			<td align="center" style="width:360px;" colspan="2">
+				<input type="text" id="leftinput" /><button onclick="createNew1()">Create</button>
+				<button onclick="modify1()">Modify</button><br />
+			</td>
+			<td align="center" style="width:360px;" colspan="2">
+				<input type="text" id="rightinput" /><button onclick="createNew2()">Create</button>
+				<button onclick="modify2()">Modify</button>
+			</td>
+		</tr>
+			<tr>
+			<td align="center" style="width:360px;" colspan="2">
+				<button onclick="del1()">DEL×</button>
+				<button onclick="moveUp1()">UP↑</button>
+				<button onclick="moveDown1()">DOWN↓</button><br />
+			</td>
+			<td align="center" style="width:360px;" colspan="2">
+				<button onclick="del2()">DEL×</button>
+				<button onclick="moveUp2()">UP↑</button>
+				<button onclick="moveDown2()">DOWN↓</button><br />
+			</td>
+		</tr>	
+	</table>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>TABLEMAKER</title>
+
+<!-- css -->
+<style type="text/css">
+</style>
+
+<!-- script -->
+<script type="text/javascript" src="provincesdata.js"></script>
+<script type="text/javascript">
+	//
+	var ids = 10000;
+	function createT(){
+		var tableNode = document.getElementById("tableOp");
+		var childNode = tableNode.childNodes;
+		//alert( tableNode );
+		
+		//定义表格内容
+		var check = "<input type='checkbox' name='checkbox' id='"+ ids +"' onchange='checkTitle(id)'/>";
+		var names = GP[ parseInt(Math.random()*(GP.length)) ];
+		var times = new Date();
+		times = times.toLocaleString();
+		var opers = "<a href='javascript:void(0);' id='"+ ids +"' onclick='singleDel(id);'>删除</a>";
+		//创建元素
+		var newTr = document.createElement( "tr" );
+		newTr.setAttribute( "id" , ids );
+		newTr.setAttribute( "align" , "center" );
+		var newTd1 = document.createElement( "td" );
+		var newTd2 = document.createElement( "td" );
+		var newTd3 = document.createElement( "td" );
+		var newTd4 = document.createElement( "td" );
+		var newTd5 = document.createElement( "td" );
+		//创建td数据内容-文本
+		newTd1.innerHTML = check ;
+		newTd2.appendChild( document.createTextNode( ids ) );
+		newTd3.appendChild( document.createTextNode( names ) );
+		newTd4.appendChild( document.createTextNode( times ) );
+		newTd5.innerHTML = opers;
+		//将td追加至tr中
+		newTr.appendChild( newTd1 );
+		newTr.appendChild( newTd2 );//将文本追加在元素
+		newTr.appendChild( newTd3 );
+		newTr.appendChild( newTd4 );
+		newTr.appendChild( newTd5 );
+		//将tr追加至table中
+		tableNode.appendChild( newTr );//将元素整体追加至同类中
+		ids++;
+		//alert( ids );
+	}
+	//指定行删除
+	function singleDel( row ){
+		var thisNode = document.getElementById( row );
+		thisNode.parentNode.removeChild( thisNode );
+	}
+	//全选
+	function selectAll(){
+		var trNodes = document.getElementsByName( "checkbox" );
+		for( var i = 0 ; i < trNodes.length ; i++ ){
+			trNodes[i].checked = true;
+		}
+	}
+	//selectAll中的全选
+	function selTitle(){
+		var trTitle = document.getElementById( "selectAll" );
+		var trNodes = document.getElementsByName( "checkbox" );
+		//alert( trTitle.checked );
+		if( trTitle.checked ){
+			for( var i = 0 ; i < trNodes.length ; i++ ){
+				trNodes[i].checked = true;
+			}
+		}else{
+			for( var i = 0 ; i < trNodes.length ; i++ ){
+				trNodes[i].checked = false;
+			}	
+		}
+	}
+	//全不选
+	function selectNo(){
+		var trNodes = document.getElementsByName( "checkbox" );
+		for( var i = 0 ; i < trNodes.length ; i++ ){
+			//trNodes[i].setAttribute( "checked", false );
+			trNodes[i].checked = false;
+		}
+	}
+	//反选
+	function untiSelect(){
+		var trNodes = document.getElementsByName( "checkbox" );
+		
+		var count = 0;
+		for( var i = 1 ;i < trNodes.length ; i++ ){
+			if( trNodes[i].checked ){
+					trNodes[i].checked = false;
+			}else{
+					trNodes[i].checked = true;
+					count++;
+			}
+		}
+		//判断标题行
+		if( trNodes[0].checked ){
+			trNodes[0].checked = false;
+		}else if( count == trNodes.length-1 ){
+			trNodes[0].checked = true;
+		}	
+	}
+	//批量删除
+	//注意删除数组本身内容对数组长度的影响
+	function deletes(){
+		var trNodes = document.getElementsByName( "checkbox" );
+		for( var i = trNodes.length-1 ;i > 0  ; i-- ){
+			if( trNodes[i].checked ){
+				singleDel( trNodes[i].id );
+			}
+		}
+	}
+	//check title
+	function checkTitle( row ){
+		if( !document.getElementById(row).checked ){
+			document.getElementById("selectAll").checked = false;
+		}
+		
+		var trNodes = document.getElementsByName( "checkbox" );
+		var count = 0;
+		for( var i = 1 ;i < trNodes.length ; i++ ){
+			if( trNodes[i].checked ){count++;}
+			//判断标题行
+			if( count == trNodes.length-1 ){
+				trNodes[0].checked = true;
+			}	
+		}
+	}
+</script>
+
+</head>
+
+<body>
+
+	<button onclick="createT()">创建</button>
+	<button onclick="selectAll()">全选</button>
+	<button onclick="selectNo()">全不选</button>
+	<button onclick="untiSelect()">反选</button>
+	<button onclick="deletes()">批量删除</button>
+	<br/>
+
+	<table id="tableOp" border="1" style="width:800px;" >
+		<tr id="titleOp">
+			<th style="width:50px;"><input type="checkbox" name="checkbox" onchange="selTitle()" id="selectAll"/></th>
+			<th style="width:100px;">编号</th>
+			<th style="width:300px;">标题</th>
+			<th style="width:300px;">时间</th>
+			<th style="width:100px;">操作</th>
+		</tr>
+	</table>
+
+</body>
+</html>
+
+

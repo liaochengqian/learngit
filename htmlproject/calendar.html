@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>calendar</title>
+<!-- css -->
+<style type="text/css">
+	.btn{
+		width:80px;
+		font-size:20px;
+	}
+	.cal {
+		width:80px;
+		font-size:20px;
+	}
+	
+	.txt{
+		width:200px;
+		height:30px;
+		font-size: 14px;
+		font-style:italic;
+	}
+	
+	div {
+		width:400px; 
+		height:38px; 
+		font-size:24px; 
+	}
+	div td{
+		width:40px;
+		text-align:center;
+	}
+</style>
+
+<!-- javascript -->
+<script type="text/javascript">
+	//-------Beginning . Counting
+	//1.start counting
+	function Counting(){
+		var t1 = document.getElementById("begin").value;
+		var t2 = document.getElementById("end").value;
+		//alert(typeof t1);
+		var now = Date.parse( t1 );
+		var dest = Date.parse( t2 );
+		var result = null;
+		//alert( !(now && dest) );
+		if( !(now && dest) ){
+			result = "输入格式错误，请重新输入";
+		}else{
+			var offset = Math.abs(dest - now);
+			//no more millisecends
+			/*
+			var msec = offset % 1000;
+			if( msec <100 ){
+				if( msec < 10 ){
+					msec = "00" + msec;
+				}else{
+					msec = "0" + msec;
+				} 
+			}
+			*/
+			var secs = parseInt(offset / 1000);
+			var sec = secs % 60;
+			var mms = parseInt(secs / 60);
+			var mm = mms % 60;
+			var hhs = parseInt(mms / 60);
+			var hh = hhs % 24;
+			var dds = parseInt(hhs / 24);
+			var dd = dds % 365;
+			var yy = parseInt(dds / 365);
+			result = yy + " 年 " + dd + "  天 " + hh + " 时 " + mm + " 分 " + sec + " 秒 ";
+		}
+		document.getElementById("timeCount").innerHTML = result;
+		//alert( result );
+	}
+	//-------Ending . Counting
+	
+	//-------------beginning . show current time 
+	//1.calendar function 
+	function calendar(){
+		var yy = document.getElementById("year").value; //gain year
+		var mm = document.getElementById("month").value;//gain month
+		
+		var mon = checkMonth( mm , yy );				// function to gain how many days got
+		
+		//set to the very time
+		var d = new Date();
+		var mills = Date.parse(yy + "-" + mm);
+		d.setTime( mills );
+		var day = d.getDay();	//gain day start,default = 0;
+		
+		print( day , mon );		//function to print cal
+		//alert(mon);
+		//alert(day);
+	}
+	//2.print calendar
+	function print( day , mon ){
+		var cal = "<table><tr><th>Mon</th><th>Tue</th><th>Wes</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr>";
+		var firstWeek = "<tr>";
+		var otherWeeks = "<tr>";
+		var count = 0;
+		var i = 1;
+		day = ( day == 0) ? 7 : day; //turn 0 to 7 and make a copy of day
+		
+		//first week
+		while( count < day ){
+			firstWeek += "<td></td>";
+			count++;
+		}
+		while( i <= (7 - day) ){
+			firstWeek += ( "<td>" + i + "</td>");
+			i++; 
+		}
+		cal += ( firstWeek + "</tr>" );  //add firstweek
+		
+		//other weeks
+		var hr = 0;
+		for( i ; i<= mon ; i++){
+			otherWeeks += ( "<td>" + i + "</td>");
+			hr++;
+			if( hr%7 == 0 ){
+				otherWeeks += "</tr><tr>"
+			}
+		}
+		cal += ( otherWeeks + "</tr>" ); //add otherweeks
+		cal += "</table><br/>";
+		//alert( cal );
+		document.getElementById("calendar").innerHTML = cal;
+	}
+	//3.check whether small year or not
+	function checkYear( yy ){
+		if( (yy%4 == 0 && yy%100 !=0 ) || ( yy%400 == 0) ){
+			return true;
+		}
+		return false;
+	}
+	//4.check days in month
+	function checkMonth( mm , yy ){
+		mm = parseInt( mm );
+		yy = parseInt( yy );
+		var mon = 31; //big
+		switch( mm ){
+			case 4:
+			case 6:
+			case 9:
+			case 11:
+				mon = 30;break; //small
+				
+			case 2: //Feb
+				if( checkYear( yy ) ){
+					mon = 29;
+				}else{
+					mon = 28;
+				}
+				break;	
+		}
+		return mon;
+	}
+	//5.function loadYear()
+	var today = new Date();
+	var ty = today.getFullYear();//current year
+	var yy = "<option selected='selected' value='"+ ty+"'>"+ ty+"</option>";
+	function loadYear(){ 
+		for( var i = ty-1 ; i>1969 ;i--){
+			yy += "<option value='"+ i +"'>"+ i +"</option>";
+		}
+		//alert( yy );
+		document.getElementById("year").innerHTML = yy;
+		loadMonth();
+		
+	}
+	//6.function loadMonth()
+	var mm = "<option selected='selected' value='1'>1</option>";
+	function loadMonth(){
+		for( var i = 2 ; i<13;i++ ){
+			mm += "<option value='"+ i +"'>"+ i +"</option>";
+		}
+		//alert(mm);
+		document.getElementById("month").innerHTML = mm;
+	}
+	//-------Ending . show current time 
+	
+</script>
+</head>
+
+<body onload="loadYear()">
+	<div align="center"><table><tr><th width="200">开始日期</th><th width="200">结束日期</th></tr></table></div>
+	<input id="begin" type="text" class="txt" value="格式：yyyy-MM-dd HH:mm:ss"/>
+	<input id="end" type="text" class="txt" value="格式：yyyy-MM-dd HH:mm:ss"/>
+	<!-- 2017-10-01 00:00:00 -->
+	<input type="button" class="btn"  value="确定" onclick="Counting()"/>
+	<div id="timeCount" align="center" style="width:400px; color:#FF0000"></div>
+	<br/>
+
+	<div style="width:120px;">日历查询:</div>
+	<select class="cal" id="year" type="text" onchange="calendar()"></select>年
+	<select class="cal" id="month" type="text" onchange="calendar()"></select>月
+	<br/>
+	<!--
+	<input type="button" class="btn"  value="确定" onclick="calendar()"/>
+	-->
+	<div id="calendar" align="center" style="width:400px;"></div>
+</body>
+</html>
