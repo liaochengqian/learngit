@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>useRegExp</title>
+
+
+
+    <!--css-->
+    <style type="text/css"></style>
+
+
+    <!--script-->
+    <script type="text/javascript">
+    //json validateRegExp
+        var Exp = {
+            decmal:"^([+-]?)\\d*\\.\\d+$", //浮点数
+            decmal1:"^[1-9]\\d*.\\d*|0.\\d*[1-9]\\d*$", //正浮点数
+            decmal2:"^-([1-9]\\d*.\\d*|0.\\d*[1-9]\\d*)$", //负浮点数
+            decmal3:"^-?([1-9]\\d*.\\d*|0.\\d*[1-9]\\d*|0?.0+|0)$", //浮点数
+            decmal4:"^[1-9]\\d*.\\d*|0.\\d*[1-9]\\d*|0?.0+|0$", //非负浮点数（正浮点数 + 0）
+            decmal5:"^(-([1-9]\\d*.\\d*|0.\\d*[1-9]\\d*))|0?.0+|0$", //非正浮点数（负浮点数 + 0）
+            intege:"^-?[1-9]\\d*$", //整数
+            intege1:"^[1-9]\\d*$", //正整数
+            intege2:"^-[1-9]\\d*$", //负整数
+            num:"^([+-]?)\\d*\\.?\\d+$", //数字
+            num1:"^[1-9]\\d*|0$", //正数（正整数 + 0）
+            num2:"^-[1-9]\\d*|0$", //负数（负整数 + 0）
+            ascii:"^[\\x00-\\xFF]+$", //仅ACSII字符
+            chinese:"^[\\u4e00-\\u9fa5]+$", //仅中文
+            color:"^[a-fA-F0-9]{6}$", //颜色
+            date:"^\\d{4}(\\-|\\/|\.)\\d{1,2}\\1\\d{1,2}$", //日期
+            email:"^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$", //邮件
+            idcard:"^[1-9]([0-9]{14}|[0-9]{17})$", //身份证
+            ip4:"^(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)$", //ip地址
+            letter:"^[A-Za-z]+$", //字母
+            letter_l:"^[a-z]+$", //小写字母
+            letter_u:"^[A-Z]+$", //大写字母
+            mobile:"^0?(13|15|18)[0-9]{9}$", //手机
+            notempty:"^\\S+$", //非空
+            password:"^.*[A-Za-z0-9\\w_-]+.*$", //密码
+            fullNumber:"^[0-9]+$", //数字
+            picture:"(.*)\\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$", //图片
+            qq:"^[1-9]*[1-9][0-9]*$", //QQ号码
+            rar:"(.*)\\.(rar|zip|7zip|tgz)$", //压缩文件
+            tel:"^[0-9\-()（）]{7,18}$", //电话号码的函数(包括验证国内区号,国际区号,分机号)
+            url:"^http[s]?:\\/\\/([\\w-]+\\.)+[\\w-]+([\\w-./?%&=]*)?$", //url
+            username:"^[A-Za-z0-9_\\-\\u4e00-\\u9fa5]+$", //用户名
+            deptname:"^[A-Za-z0-9_()（）\\-\\u4e00-\\u9fa5]+$", //单位名
+            zipcode:"^\\d{6}$", //邮编
+            realname:"^[A-Za-z\\u4e00-\\u9fa5]+$", // 真实姓名
+            companyname:"^[A-Za-z0-9_()（）\\-\\u4e00-\\u9fa5]+$",
+            companyaddr:"^[A-Za-z0-9_()（）\\#\\-\\u4e00-\\u9fa5]+$",
+            companysite:"^http[s]?:\\/\\/([\\w-]+\\.)+[\\w-]+([\\w-./?%&#=]*)?$"
+        };
+
+        function checkAccount( val ){
+            var regexp = new RegExp( Exp.email );
+            if( !regexp.test(val) ){
+                //alert( "not ok" );
+                document.getElementById("tip1").innerHTML = "* email is not correct";
+                return false;
+            }else {
+                //alert( "ok");
+                document.getElementById("tip1").innerHTML = "√ correct";
+                return true;
+            }
+        }
+
+        function tip1() {
+            document.getElementById("tip1").innerHTML = "6~18 charactors;letter,number and '_' is available"
+         }
+
+         function tip2() {
+             document.getElementById("tip2").innerHTML = "6~16 charactors;distinct from uppercase and lowerase"
+         }
+
+        function checkPasswd(val){
+            var num = new RegExp( Exp.num );
+            var letter = new RegExp( Exp.letter );
+
+            //var asc = "^[\\x21-\\x2F]+$";
+            //var ascii = new RegExp( asc );
+
+            var bn = num.test(val);
+            var bl = letter.test(val);
+           // var ba = ascii.test(val);
+
+	 if( document.getElementById("passwd").value.length < 8 ) {
+		document.getElementById("tip2").innerHTML = "Bad Password";
+		return false;
+	}
+
+            if( !(bl || bn) ){
+                document.getElementById("tip2").innerHTML = "Strong Password"
+                return true;
+            }
+
+            if( !bl || !bn ){
+                    document.getElementById("tip2").innerHTML = "Good Password";
+                    return true;
+               }else{
+                    document.getElementById("tip2").innerHTML = "Bad Password";
+                    return false;
+            }
+            /*
+            if( (bl && !bn && !ba) || (!bl && bn && !ba) || (!bl && !bn && ba) ){
+                document.getElementById("tip2").innerHTML = "Bad Password"
+                return false;
+            }*/
+
+        }
+
+        function agreed() {
+            if( document.getElementById("agree").checked ){
+                //alert( document.getElementById("agree").checked );
+                document.getElementById("signin").removeAttribute("disabled");
+            }else{
+                document.getElementById("signin").setAttribute("disabled","disabled");
+            }
+        }
+        function isOk() {
+            var baccount = checkAccount( document.getElementById("account").value );
+            var bpasswd = checkPasswd( document.getElementById("passwd").value );
+          if( baccount && bpasswd ){
+              //alert("on");
+              document.getElementById("forms").submit();
+          }else{
+              //alert("bad");
+              if( !baccount ){
+                  document.getElementById("account").select();
+                  document.getElementById("account").focus();
+              }else{
+                  document.getElementById("passwd").select();
+                  document.getElementById("passwd").focus();
+              }
+              return false;
+          }
+        }
+
+    </script>
+
+</head>
+<body>
+    <fieldset style="margin-left:50px;margin-top: 50px;  width: 500px;">
+        <legend style="color: #00f; font-family: 黑体; font-size: 20px;"><b>Sing In<b/></legend>
+         <form action="successed.html" method="get" id="forms" style="align-content: center">
+         <table>
+             <tr>
+                 <td width="80px">Account:</td>
+                 <td width="200px"><input type="text" id="account" onblur="checkAccount(this.value)" onfocus="tip1()"/></td>
+                 <td height="60px" id="tip1" align="left" style="font-size: 14px;"></td>
+             </tr><tr>
+                 <td width="80px">Passwd:</td>
+                 <td width="200px"><input type="password" id="passwd" onblur="checkPasswd(this.value)" onfocus="tip2()"/></td>
+                 <td height="60px" id="tip2" align="left" style="font-size: 14px;"></td>
+             </tr>
+         </table>
+             <br/>
+            <label><input type="checkbox" id="agree" onchange="agreed()"/>I am agreeable to sites' <a href="politics.html" target="_blank">demand</a>.</label>
+            <br/><br/>
+             <div align="center">
+            <input type="button" id="signin" style="text-align: center" disabled value="Sing In" onclick="isOk()"/>
+             </div>
+        </form>
+
+
+    </fieldset>
+</body>
+</html>

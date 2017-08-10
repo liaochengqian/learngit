@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JQuerySelected</title>
+    <!-- css -->
+    <style type="text/css">
+        img {
+            width: 86px;
+            height: 30px;
+        }
+    </style>
+
+    <!-- script import JQuery.js -->
+    <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+
+    <script type="text/javascript" >
+        jQuery(document).ready( function(){
+
+        });
+    </script>
+</head>
+<body>
+    <fieldset id="field" style="width: 500px; padding: 10px; align-items: center">
+        <legend><select id="history"><option selected>-History-</option></select></legend>
+        <form id="search" method="get" target="_self">
+            <table width="480px;">
+                <tr>
+                    <td id="picbox" style="width:100px height:35px;"><a href="www.baidu.com"><img src="pic/qq.jpg"/></a></td>
+                    <td style="width:320px;"><input type="text" id="input" style="width: 300px;height: 30px;"/></td>
+                    <td style="height: 30px;"><input type="submit" value="Baidu"/></td>
+                </tr>
+                <tr style="height: 50px;text-align: center;vertical-align: middle;">
+                    <td colspan="3">
+                        <input type="radio" name="ltd.c"/>Baidu
+                        <input type="radio" name="ltd.c"/>JD
+                        <input type="radio" name="ltd.c"/>Taobao
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </fieldset>
+</body>
+</html>
