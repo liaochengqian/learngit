@@ -29,27 +29,36 @@
             switch( val ) {
                 case "bd":      //baidu
                     //alert("bd");
-                    $("#search").attr( "action","https://www.baidu.com" );
+                    $("#search").attr( "action","https://www.baidu.com/s" );
                     $("#picbox").html( bd );
                     $("#btn").attr("value", "Baidu");
+                    $("#input").attr("name", "wd");
                     break;
 
                 case "tb":      //taobao
                     //alert("tb");
-                    $("#search").attr( "action", "https://www.taobao.com/" );
+                    $("#search").attr( "action", "https://s.taobao.com/search" );
                     $("#picbox").html( tb );
                     //document.getElementById("picbox").innerHTML = tb;
-                    $("#btn").attr("value", "Tmall");
+                    $("#btn").attr("value", "TaoBao");
+                    $("#input").attr("name", "q");
                     break;
 
                 case "jd":      //JD
                     //alert("jd");
-                    $("#search").attr( "action" , "https://www.jd.com/" );
+                    $("#search").attr( "action" , "https://search.jd.com/Search" );
                     $("#picbox").html( jd );
                     $("#btn").attr("value", "JD");
+                    $("#input").attr("name", "keyword");
                     break;
             }
         }
+
+        $("#btn").click(function(){
+            var vls = "<option>" + new Date().toLocaleTimeString() +":_" +$("input").val() +"</option>";
+            alert( vls );
+            $("#history").append( vls );
+        });
     </script>
 </head>
 <body>
@@ -58,9 +67,9 @@
         <form id="search" action="https://www.baidu.com/s" value="sea" method="get" target="_self">
             <table width="480px;">
                 <tr>
-                    <td id="picbox" style="width:100px height:35px;"><a href="https://www.baidu.com"><img src="pic/bd.png"/></a></td>
-                    <td style="width:320px;"><input type="text" id="input" style="width: 300px;height: 22px;"/></td>
-                    <td><input id="btn" style="width:50; height: 22px;" type="submit" value="Baidu"/></td>
+                    <td id="picbox" style="width:86px height:30px;"><a href="https://www.baidu.com"><img src="pic/bd.png"/></a></td>
+                    <td style="width:340px;"><input type="text" id="input" name="wd" style="width: 300px;height: 22px;"/></td>
+                    <td><input id="btn" style="width: 54px; height: 22px;" type="button" value="Baidu"/></td>
                 </tr>
                 <tr style="height: 50px;text-align: center;vertical-align: middle;">
                     <td colspan="3">
