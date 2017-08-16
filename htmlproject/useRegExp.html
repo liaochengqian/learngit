@@ -78,18 +78,21 @@
         function checkPasswd(val){
             var num = new RegExp( Exp.num );
             var letter = new RegExp( Exp.letter );
+            //var len = new RegExp( "*{0,8}$" );
 
             //var asc = "^[\\x21-\\x2F]+$";
             //var ascii = new RegExp( asc );
 
             var bn = num.test(val);
             var bl = letter.test(val);
+          //  var len = len.test( val );
            // var ba = ascii.test(val);
 
-	 if( document.getElementById("passwd").value.length < 8 ) {
+	/* if( len ) {
+	     alert( "len" );
 		document.getElementById("tip2").innerHTML = "Bad Password";
 		return false;
-	}
+	}*/
 
             if( !(bl || bn) ){
                 document.getElementById("tip2").innerHTML = "Strong Password"

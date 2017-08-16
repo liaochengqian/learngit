@@ -18,47 +18,51 @@
         jQuery(document).ready( function(){
             //$( "#input" ).select();
             $( "#input" ).focus();
+
+            $("input:button").click( function(){
+                var vls = "<option>" + new Date().toLocaleTimeString() +":_" +$("input").val() +"</option>";
+//                alert( "vls" );
+                $("#history").append( vls );
+                $("form").submit();
+            });
         });
 
-        function swap(){
-            var val = $('input:radio:checked').val();
-            var bd = "<a href=\"https://www.baidu.com\"><img src=\"pic/bd.png\"/></a>";
-            var tb = "<a href=\"https://www.taobao.com\"><img src=\"pic/tb.png\"/></a>";
-            var jd = "<a href=\"https://www.jd.com\"><img src=\"pic/jd.png\"/></a>";
+            function swap(){
+                var val = $('input:radio:checked').val();
 
-            switch( val ) {
-                case "bd":      //baidu
-                    //alert("bd");
-                    $("#search").attr( "action","https://www.baidu.com/s" );
-                    $("#picbox").html( bd );
-                    $("#btn").attr("value", "Baidu");
-                    $("#input").attr("name", "wd");
-                    break;
+               // alert(val);
 
-                case "tb":      //taobao
-                    //alert("tb");
-                    $("#search").attr( "action", "https://s.taobao.com/search" );
-                    $("#picbox").html( tb );
-                    //document.getElementById("picbox").innerHTML = tb;
-                    $("#btn").attr("value", "TaoBao");
-                    $("#input").attr("name", "q");
-                    break;
+                var bd = "<a href=\"https://www.baidu.com\"><img src=\"pic/bd.png\"/></a>";
+                var tb = "<a href=\"https://www.taobao.com\"><img src=\"pic/tb.png\"/></a>";
+                var jd = "<a href=\"https://www.jd.com\"><img src=\"pic/jd.png\"/></a>";
 
-                case "jd":      //JD
-                    //alert("jd");
-                    $("#search").attr( "action" , "https://search.jd.com/Search" );
-                    $("#picbox").html( jd );
-                    $("#btn").attr("value", "JD");
-                    $("#input").attr("name", "keyword");
-                    break;
+                switch( val ) {
+                    case "bd":      //baidu
+                        //alert("bd");
+                        $("#search").attr( "action","https://www.baidu.com/s" );
+                        $("#picbox").html( bd );
+                        $("#btn").attr("value", "Baidu");
+                        $("#input").attr("name", "wd");
+                        break;
+
+                    case "tb":      //taobao
+                        //alert("tb");
+                        $("#search").attr( "action", "https://s.taobao.com/search" );
+                        $("#picbox").html( tb );
+                        //document.getElementById("picbox").innerHTML = tb;
+                        $("#btn").attr("value", "TaoBao");
+                        $("#input").attr("name", "q");
+                        break;
+
+                    case "jd":      //JD
+                        //alert("jd");
+                        $("#search").attr( "action" , "https://search.jd.com/Search" );
+                        $("#picbox").html( jd );
+                        $("#btn").attr("value", "JD");
+                        $("#input").attr("name", "keyword");
+                        break;
+                }
             }
-        }
-
-        $("#btn").click(function(){
-            var vls = "<option>" + new Date().toLocaleTimeString() +":_" +$("input").val() +"</option>";
-            alert( vls );
-            $("#history").append( vls );
-        });
     </script>
 </head>
 <body>
@@ -71,15 +75,13 @@
                     <td style="width:340px;"><input type="text" id="input" name="wd" style="width: 300px;height: 22px;"/></td>
                     <td><input id="btn" style="width: 54px; height: 22px;" type="button" value="Baidu"/></td>
                 </tr>
-                <tr style="height: 50px;text-align: center;vertical-align: middle;">
-                    <td colspan="3">
-                        <input type="radio" name="ltd.c" value="bd" checked="checked" onchange="swap()" />Baidu
-                        <input type="radio" name="ltd.c" value="jd" onchange="swap()" />JD
-                        <input type="radio" name="ltd.c" value="tb" onchange="swap()" />Taobao
-                    </td>
-                </tr>
             </table>
         </form>
+        <div style="width: 500px; height: 50px;text-align: center;vertical-align: middle; display: table-cell;">
+                <input type="radio" name="ltd.c" value="bd" checked="checked" onchange="swap()" />Baidu
+                <input type="radio" name="ltd.c" value="jd" onchange="swap()" />JD
+                <input type="radio" name="ltd.c" value="tb" onchange="swap()" />Taobao
+        </div>
     </fieldset>
 </body>
 </html>
