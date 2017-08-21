@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计算器</title>
+
+    <style type="text/css">
+        button {
+            text-align: center;
+            width: 60px;
+            height: 50px;
+            background: sienna;
+            font-size: 30px;
+        }
+
+        .show {
+            width:240px;
+            height:20px;
+            text-align: right;
+            border: none;
+            font-size: 20px;
+        }
+
+    </style>
+
+    <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+
+    <script type="text/javascript">
+    $(function () {
+        var flag = false;
+        $("button").click( function () {
+
+            var input = $(this).text();
+            if( input == "="){
+                return;
+            }
+
+            if( input == "AC"){
+                $("input:text").val("");
+                return;
+            }
+            if( input == "Del"){
+                var val = $("input:text:last").val();
+                var len = val.length;
+                $("input:text:last").val( val.substring(0,len-1) );
+                return;
+            }
+
+            var num = "^[1-9]\\d*$";
+            var b = new RegExp( num ) .test( input );
+            //alert(b);
+
+            roleOver( flag && b );
+            flag = false;
+
+            var already = $("input:text:last").val();
+            $("input:text:last").val( already + input );
+        });
+
+        $("#calcu").click(function () {
+            var tmp = $("input:text:last").val();
+            try {
+                var result = eval(tmp);
+            }catch (e){
+                return;
+            }
+
+            if( isNaN(result)){
+                return;
+            }
+
+
+            var len = $("input:text").length;
+
+            for( var i=0;i<len-1;i++){
+                var j = i+1;
+                $("input:text:eq("+ i +")").val( $("input:text:eq(" + j + ")").val() );
+                if( i==(len-2) ){
+                    $("input:text:eq(" +i+ ")").val( tmp + "=" );
+                }
+               // alert( $("input:text:eq( " + j + " )").val() );
+            }
+            $("input:text:last").val( result );
+            flag = true;
+           // $("input:text").val( result );
+        });
+        
+        function roleOver( flag ) {
+            if (flag) {
+                var tmp = $("input:text:last").val();
+                var result = eval(tmp);
+                var len = $("input:text").length;
+
+                //alert("roleOVER");
+
+                for (var i = 0; i < len - 1; i++) {
+                    var j = i + 1;
+                    $("input:text:eq(" + i + ")").val($("input:text:eq(" + j + ")").val());
+                    if (i == (len - 2)) {
+                        $("input:text:eq(" + i + ")").val( "=" + result );
+                    }
+                    // alert( $("input:text:eq( " + j + " )").val() );
+                }
+                $("input:text:last").val("");
+                // $("input:text").val( result );
+            }
+        }
+
+
+
+
+
+    });
+    </script>
+
+</head>
+<body style="align-items:center;">
+    <div align="center" style="width: 100%; display: inline-block">
+        <table style="display: table-cell">
+            <tr><td colspan="4"><input class="show" type="text"/></td></tr>
+            <tr><td colspan="4"><input class="show" type="text"/></td></tr>
+            <tr><td colspan="4"><input class="show" type="text"/></td></tr>
+            <tr><td colspan="4"><input class="show" type="text"/></td></tr>
+            <tr><td colspan="4"><input class="show" type="text"/></td></tr>
+            <tr><td colspan="4"><input class="show" type="text"/></td></tr>
+            <tr><th><button>AC</button></th><th><button>Del</button></th><th><button>/</button></th><th><button>*</button></th></tr>
+            <tr><td><button>7</button></td><td><button>8</button></td><td><button>9</button></td><th><button>-</button></th></tr>
+            <tr><td><button>4</button></td><td><button>5</button></td><td><button>6</button></td><th><button>+</button></th></tr>
+            <tr><td><button>1</button></td><td><button>2</button></td><td><button>3</button></td><th rowspan="2\
+                                                   "><button id="calcu" style="width:60px; height:100px">=</button></th></tr>
+            <tr><td><button>%</button></td><td><button>0</button></td><td><button>.</button></td></tr>
+        </table>
+    </div>
+</body>
+</html>

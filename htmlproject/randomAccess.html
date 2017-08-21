@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RandomAccess</title>
+    <!--css-->
+    <style type="text/css">
+        td {
+            width: 80px;
+            height: 500px;
+        }
+    </style>
+
+    <!--script-->
+    <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            //alert("go");
+            //create tables
+            var trow = null
+            for( var i =0;i<13;i++){
+                trow += "<td id='"+ i + "'></td>";
+            }
+            $("#tr1").append(trow);
+
+            $("td").hover(
+                function () {
+                $(this).css("background","red");
+                $(this).fadeIn(800);
+                }
+            ,
+                function () {
+                $(this).fadeOut(800);
+                $(this).fadeIn(1000);
+                //$(this).css("background","#fff");
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="show1"><table id="tb1"><tr id="tr1"></tr></table></div>
+</body>
+</html>
